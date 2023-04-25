@@ -80,6 +80,7 @@
   VariableFlashInfoLib
   VariablePolicyLib
   VariablePolicyHelperLib
+  SmmCpuRendezvousLib
 
 [Protocols]
   gEfiSmmFirmwareVolumeBlockProtocolGuid        ## CONSUMES

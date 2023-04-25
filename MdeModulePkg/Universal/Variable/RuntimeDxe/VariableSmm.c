@@ -28,6 +28,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 #include <Library/MmServicesTableLib.h>
 #include <Library/VariablePolicyLib.h>
+#include <Library/SmmCpuRendezvousLib.h>
 
 #include <Guid/SmmVariableCommon.h>
 #include "Variable.h"
@@ -86,6 +87,13 @@ SmmVariableSetVariable (
   )
 {
   EFI_STATUS  Status;
+
+  //
+  // Need to wait for all Aps to arrive in Relaxed-AP Sync Mode
+  //
+  if (EFI_ERROR (SmmWaitForAllProcessor (TRUE))) {
+    DEBUG ((DEBUG_ERROR, "SetVariable: fail to wait for all AP check in SMM!\n"));
+  }
 
   //
   // Disable write protection when the calling SetVariable() through EFI_SMM_VARIABLE_PROTOCOL.
